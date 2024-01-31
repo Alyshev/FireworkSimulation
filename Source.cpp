@@ -12,7 +12,8 @@ int main()
 	RenderWindow window(VideoMode(800, 800), "FIRE", Style::Default);
 	CircleShape shape(100.f);
 	shape.setFillColor(Color::Yellow);
-	std::vector <Firework> vect;
+	std::vector <Firework> vect(1000);
+	int index = 999;
 
 	const int FPS = 200;
 	Clock frameTime;
@@ -28,7 +29,8 @@ int main()
 				window.close();
 			if (event.type == Event::MouseButtonPressed)
 			{
-				vect.emplace_back(window.mapPixelToCoords(Mouse::getPosition(window)), window);
+				vect[index] = Firework(window.mapPixelToCoords(Mouse::getPosition(window)), window);
+				index--;
 			}
 		}
 
@@ -41,10 +43,17 @@ int main()
 
 			window.draw(shape);
 
-			for (int i = 0; i < vect.size(); i++)
+			for (int i = vect.size() - 1; i > 0; i--)
 			{
-				vect[i].update(window);
-				vect[i].drawFirework(window);
+				bool isDead = vect[i].update(window);
+				if (isDead)
+				{
+					vect.pop_back();
+				}
+				else
+				{
+					vect[i].drawFirework(window);
+				}
 			}
 
 			window.display();
