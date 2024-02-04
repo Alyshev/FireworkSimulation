@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
 #include <vector>
 #include "Firework.h"
@@ -10,13 +11,15 @@ using namespace sf;
 int main()
 {
 	RenderWindow window(VideoMode(800, 800), "FIRE", Style::Default);
-	CircleShape shape(100.f);
-	shape.setFillColor(Color::Yellow);
+
 	std::vector <Firework> vect(1000);
 	int index = 999;
 
 	const int FPS = 200;
 	Clock frameTime;
+
+
+
 
 	while (window.isOpen())
 	{
@@ -39,9 +42,6 @@ int main()
 			frameTime.restart();
 
 			window.clear(Color::Black);
-
-
-			window.draw(shape);
 
 			for (int i = vect.size() - 1; i > 0; i--)
 			{

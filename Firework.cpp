@@ -8,6 +8,9 @@ Firework::Firework(Vector2f position, RenderWindow& window)
 {
 	this->center = position;
 
+
+
+
 	circles = std::vector <std::vector <CircleShape>>(100);
 	for (int i = 0; i < circles.size(); i++)
 	{
@@ -40,13 +43,17 @@ Firework::Firework(Vector2f position, RenderWindow& window)
 		direction[i] = (360.0 / direction.size()) * i;
 	}
 
+	
 
-	fire.setFillColor(Color::Yellow);
-	fire.setRadius(4);
-	fire.setOrigin(4, 4);
+	fire.setFillColor(Color(200, 200, 200, 255));
+	fire.setRadius(2);
+	fire.setOrigin(2, 2);
 	fire.setPosition(rand() % window.getSize().x, window.getSize().y);
+
+
 	stage = 1;
 	speedFire = 500;
+
 
 	time.restart();
 	endFlag == false;
@@ -66,6 +73,10 @@ Firework::~Firework()
 
 bool Firework::update(RenderWindow& window)
 {
+	//SoundBuffer buffer;
+	//buffer.loadFromFile("bah.mp3");
+	//Sound sound;
+	//sound.setBuffer(buffer);
 	if (isActive)
 	{
 		double currentTime = time.restart().asSeconds();
@@ -77,9 +88,12 @@ bool Firework::update(RenderWindow& window)
 			float div = length / (speedFire * currentTime);
 			fire.move(vect.x / div, vect.y / div);
 
+
 			if (fire.getPosition().y < center.y)
 			{
 				stage = 2;
+
+				//startSound(sound);
 			}
 		}
 		else if (stage == 2)
@@ -137,7 +151,18 @@ void Firework::drawFirework(RenderWindow& window)
 	{
 		if (stage == 1)
 		{
-			window.draw(fire);
+			CircleShape cs = fire;
+			Vector2f vect = center - fire.getPosition();
+			float length = sqrt(vect.x * vect.x + vect.y * vect.y);
+			float div = -length / 3;
+
+			for (int i = 0; i < 25; i++)
+			{
+				cs.move(vect.x / div, vect.y / div);
+				cs.setFillColor(Color(cs.getFillColor().r, cs.getFillColor().g-6, cs.getFillColor().b-10,
+					cs.getFillColor().a - 10));
+				window.draw(cs);
+			}
 		}
 		else if (stage == 2 || stage == 3)
 		{
@@ -151,3 +176,15 @@ void Firework::drawFirework(RenderWindow& window)
 		}
 	}
 }
+
+//void Firework::startSound(Sound& sound)
+//{
+//	if (stage == 1)
+//	{
+//		sound.play();
+//	}
+//	else
+//	{
+//		sound.play();
+//	}
+//}

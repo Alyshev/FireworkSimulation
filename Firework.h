@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <vector>
 #include <random>
 #include <cmath>
@@ -25,6 +26,9 @@ class Firework
 	bool endFlag;
 
 	bool isActive;
+
+
+
 public: 
 	Firework(Vector2f position, RenderWindow& window);
 	Firework();
@@ -35,6 +39,10 @@ public:
 
 
 	void drawFirework(RenderWindow& window);
+
+
+	//void startSound(Sound& sound);
+
 
 };
 
